@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bone.c5.mapper.UserMapper">
+    <select id="getByUsername" resultType="com.bone.c5.entity.User">
+        select * from user where username = #{username}
+    </select>
+    <select id="getUserRolesByUserId" resultType="com.bone.c5.entity.Role">
+        select * from role r, user_role ur where r.id = ur.role_id and ur.user_id = #{id}
+    </select>
+    <select id="getUserRolesBySteam64" resultType="com.bone.c5.entity.User">
+        select * from user where steam64 = #{steam64}
+    </select>
+    <insert id="setVip">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            select count(*) from vip where steam64 = #{steam64}
+        </selectKey>
+        <if test="count > 0">
+            update vip
+            set time = date_add(time, INTERVAL #{time} day)
+            where steam64 = #{steam64}
+        </if>
+        <if test="count==0">
+            insert into vip (steam64, time) VALUES (#{steam64}, date_add(now(), interval #{time} day));
+        </if>
+    </insert>
+
+    <select id="getVipTime" resultType="com.bone.c5.entity.Vip">
+        select * from vip where steam64 = #{steam64}
+    </select>
+</mapper>

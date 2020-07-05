@@ -19,5 +19,5 @@ node {
         sh "docker rmi ${name} || echo 'images does not exist'"
         def customImage = docker.build(name)
         customImage.run("-it -d --name ${dockerName} -p 9999:9999")
-    } 
+    }
 }
