@@ -1,10 +1,6 @@
 package com.bone.c5.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.bone.c5.dto.user.UserRegisterDTO;
-import com.bone.c5.entity.Match;
-import com.bone.c5.entity.Player;
-import com.bone.c5.entity.User;
+import com.bone.c5.entity.StatsMatchesEntity;
 import com.bone.c5.vo.match.MatchDetailVO;
 
 import java.util.List;
@@ -14,6 +10,10 @@ import java.util.List;
  * @Package com.bone.c5.service
  * @date 2020/6/25 14:48
  */
-public interface MatchService extends IService<Match> {
+public interface MatchService {
     MatchDetailVO getMatchDetailById(Integer matchId);
+
+    List<StatsMatchesEntity> getAllMatch();
+
+    List<StatsMatchesEntity> getMatchBySteam(String steam);
 }

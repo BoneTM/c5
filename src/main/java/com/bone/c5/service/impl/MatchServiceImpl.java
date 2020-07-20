@@ -1,21 +1,20 @@
 package com.bone.c5.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bone.c5.dto.user.UserRegisterDTO;
-import com.bone.c5.entity.Binder;
-import com.bone.c5.entity.Match;
-import com.bone.c5.entity.Player;
-import com.bone.c5.entity.User;
-import com.bone.c5.mapper.BinderMapper;
-import com.bone.c5.mapper.MatchMapper;
-import com.bone.c5.mapper.UserMapper;
+import com.bone.c5.entity.StatsMatchesEntity;
+import com.bone.c5.entity.StatsPlayersEntity;
+import com.bone.c5.repository.StatsMatchesRepository;
+import com.bone.c5.repository.StatsPlayersRepository;
 import com.bone.c5.service.MatchService;
-import com.bone.c5.service.UserService;
+import com.bone.c5.util.BizException;
 import com.bone.c5.vo.match.MatchDetailVO;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Bone
@@ -23,13 +22,27 @@ import java.util.List;
  * @date 2020/6/25 14:47
  */
 @Service
-public class MatchServiceImpl extends ServiceImpl<MatchMapper, Match> implements MatchService {
+public class MatchServiceImpl implements MatchService {
     @Resource
-    private MatchMapper matchMapper;
+    private StatsMatchesRepository statsMatchesRepository;
+    @Resource
+    private StatsPlayersRepository statsPlayersRepository;
 
 
     @Override
     public MatchDetailVO getMatchDetailById(Integer matchId) {
-        return new MatchDetailVO(matchMapper.selectById(matchId), matchMapper.getMatchDetailById(matchId));
+        List<StatsPlayersEntity> statsPlayersEntities = statsPlayersRepository.findAllByMatchId(matchId).orElseThrow(() -> new BizException("比赛不存在"));
+        return new MatchDetailVO(statsMatchesRepository.findById(matchId).orElseThrow(() -> new BizException("比赛不存在")), statsPlayersEntities);
     }
+
+    @Override
+    public List<StatsMatchesEntity> getAllMatch() {
+        return statsMatchesRepository.findAllByOrderByStartTimeDesc().get();
+    }
+
+    @Override
+    public List<StatsMatchesEntity> getMatchBySteam(String steam) {
+        return statsMatchesRepository.findAllBySteam(steam).get();
+    }
+
 }

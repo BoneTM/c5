@@ -1,17 +1,11 @@
 package com.bone.c5.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.bone.c5.dto.user.UserRegisterDTO;
-import com.bone.c5.entity.Match;
 import com.bone.c5.service.MatchService;
-import com.bone.c5.service.UserService;
 import com.bone.c5.util.RestCodeEnum;
 import com.bone.c5.util.Result;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.security.Principal;
 
 /**
  * @author Bone
@@ -25,7 +19,7 @@ public class MatchController {
 
     @GetMapping("/match")
     public Result getMatches() {
-        return Result.build(RestCodeEnum.SUCCESS).data(matchService.list(new QueryWrapper<Match>().orderByDesc("start_time")));
+        return Result.build(RestCodeEnum.SUCCESS).data(matchService.getAllMatch());
     }
 
     @GetMapping("/match/{matchId}")

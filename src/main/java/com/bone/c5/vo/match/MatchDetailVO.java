@@ -1,7 +1,8 @@
 package com.bone.c5.vo.match;
 
-import com.bone.c5.entity.Match;
-import com.bone.c5.entity.Player;
+import com.bone.c5.entity.StatsMatchesEntity;
+import com.bone.c5.entity.StatsPlayersEntity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -15,6 +16,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class MatchDetailVO {
-    private Match match;
-    private List<Player> players;
+    private StatsMatchesEntity match;
+    private List<StatsPlayersEntity> players;
 }

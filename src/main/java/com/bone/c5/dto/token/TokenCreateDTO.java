@@ -1,6 +1,5 @@
 package com.bone.c5.dto.token;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;

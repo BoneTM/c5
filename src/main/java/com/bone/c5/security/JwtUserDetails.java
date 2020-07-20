@@ -1,6 +1,6 @@
 package com.bone.c5.security;
 
-import com.bone.c5.entity.Role;
+import com.bone.c5.entity.RoleEntity;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,15 +14,16 @@ import java.util.List;
 public class JwtUserDetails implements UserDetails {
     private String username;
     private String password;
-    private List<Role> roles;
+    private List<RoleEntity> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-        for (Role role : roles) {
+        for (RoleEntity role : roles) {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         return authorities;
     }

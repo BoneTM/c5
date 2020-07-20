@@ -25,7 +25,8 @@ public class CodeController {
 
     @PostMapping("/admin/code")
     public Result createCode(@RequestBody @Validated CodeCreateDTO codeCreateDTO) {
-        return Result.build(RestCodeEnum.SUCCESS).data(codeService.create(codeCreateDTO));
+        codeService.create(codeCreateDTO);
+        return Result.build(RestCodeEnum.SUCCESS);
     }
 
     @GetMapping("/admin/code")

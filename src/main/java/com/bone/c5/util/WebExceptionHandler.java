@@ -22,6 +22,7 @@ public class WebExceptionHandler {
 
     @ExceptionHandler
     public Result unknownException(Exception e) {
+        e.printStackTrace();
         return new Result(RestCodeEnum.INTERNAL_SERVER_ERROR);
     }
 }
