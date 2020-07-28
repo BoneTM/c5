@@ -7,14 +7,12 @@ import com.bone.c5.repository.StatsPlayersRepository;
 import com.bone.c5.service.MatchService;
 import com.bone.c5.util.BizException;
 import com.bone.c5.vo.match.MatchDetailVO;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Bone
@@ -36,13 +34,13 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<StatsMatchesEntity> getAllMatch() {
-        return statsMatchesRepository.findAllByOrderByStartTimeDesc().get();
+    public Page<StatsMatchesEntity> pageMatch(Pageable page) {
+        return statsMatchesRepository.findAllByOrderByStartTimeDesc(page);
     }
 
     @Override
     public List<StatsMatchesEntity> getMatchBySteam(String steam) {
-        return statsMatchesRepository.findAllBySteam(steam).get();
+        return statsMatchesRepository.findAllBySteam(steam);
     }
 
 }

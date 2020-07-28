@@ -30,5 +30,4 @@ public class ServerEntity {
     private String ip;
     @Column(name = "port")
     private int port;
-
 }

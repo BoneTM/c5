@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @author Bone
  * @Package com.bone.c5.vo.server
@@ -19,4 +21,5 @@ public class ServerInfoVO {
     private String map;
     private byte numOfPlayers;
     private byte maxPlayers;
+    private List players;
 }

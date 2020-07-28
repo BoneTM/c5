@@ -3,6 +3,7 @@ package com.bone.c5.controller;
 import com.bone.c5.service.MatchService;
 import com.bone.c5.util.RestCodeEnum;
 import com.bone.c5.util.Result;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,12 +19,12 @@ public class MatchController {
     private MatchService matchService;
 
     @GetMapping("/match")
-    public Result getMatches() {
-        return Result.build(RestCodeEnum.SUCCESS).data(matchService.getAllMatch());
+    public Result getMatches(Pageable pageable) {
+        return Result.build(RestCodeEnum.SUCCESS).data(matchService.pageMatch(pageable));
     }
 
     @GetMapping("/match/{matchId}")
-    public Result getMatchDetailById(@PathVariable String matchId) {
-        return Result.build(RestCodeEnum.SUCCESS).data(matchService.getMatchDetailById(Integer.parseInt(matchId)));
+    public Result getMatchDetailById(@PathVariable Integer matchId) {
+        return Result.build(RestCodeEnum.SUCCESS).data(matchService.getMatchDetailById(matchId));
     }
 }

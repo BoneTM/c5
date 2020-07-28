@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 /**
  * @author Bone
@@ -14,22 +13,21 @@ import java.util.Objects;
  */
 @Entity
 @Data
-@Table(name = "code")
+@Table(name = "c5_config")
 @NoArgsConstructor
 @AllArgsConstructor
-public class CodeEntity {
+public class ConfigEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "code")
-    private String code;
+    @Column(name = "message_prefix")
+    private String messagePrefix;
 
-    @Column(name = "time")
-    private int time;
+    @Column(name = "vip_prefix")
+    private String vipPrefix;
 
-    @Column(name = "steam64")
-    private String steam64;
-
+    @Column(name = "op_prefix")
+    private String opPrefix;
 }

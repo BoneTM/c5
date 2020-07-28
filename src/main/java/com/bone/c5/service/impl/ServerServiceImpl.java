@@ -6,7 +6,6 @@ import com.bone.c5.repository.ServerRepository;
 import com.bone.c5.service.ServerService;
 import com.bone.c5.util.BizException;
 import com.bone.c5.vo.server.ServerInfoVO;
-import com.bone.c5.vo.server.ServerPlayerVO;
 import com.ibasco.agql.protocols.valve.source.query.client.SourceQueryClient;
 import com.ibasco.agql.protocols.valve.source.query.pojos.SourcePlayer;
 import com.ibasco.agql.protocols.valve.source.query.pojos.SourceServer;
@@ -16,8 +15,10 @@ import javax.annotation.Resource;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 /**
  * @author Bone
@@ -39,24 +40,33 @@ public class ServerServiceImpl implements ServerService {
     @Override
     public ServerInfoVO getInfoByServerId(Integer serverId) {
         ServerEntity serverEntity = serverRepository.findById(serverId).orElseThrow(() -> new BizException("服务器未找到"));
-        CompletableFuture<SourceServer> sourceServerCompletableFuture = sourceQueryClient.getServerInfo(new InetSocketAddress(serverEntity.getIp(), serverEntity.getPort()));
+        InetSocketAddress inetSocketAddress = new InetSocketAddress(serverEntity.getIp(), serverEntity.getPort());
+        CompletableFuture<SourceServer> serverinfo = sourceQueryClient.getServerInfo(inetSocketAddress);
+        CompletableFuture<List<SourcePlayer>> players = sourceQueryClient.getPlayers(inetSocketAddress);
+        SourceServer sourceServer;
+        List<String> sourcePlayers;
+        try {
+            sourceServer = serverinfo.get();
+        } catch (Exception e) {
+            throw new BizException("服务器信息加载失败");
+        }
 
-        SourceServer sourceServer = sourceServerCompletableFuture.join();
-        return new ServerInfoVO(serverEntity.getIp(), serverEntity.getPort(), sourceServer.getName(), sourceServer.getMapName(),
-                sourceServer.getNumOfPlayers(), sourceServer.getMaxPlayers());
+        try {
+            sourcePlayers = players.get().stream().map(x -> x.getName()).collect(Collectors.toList());
+        } catch (Exception e) {
+            sourcePlayers = new ArrayList<>();
+        }
+
+        return new ServerInfoVO(serverEntity.getIp(), serverEntity.getPort(), sourceServer.getName(), sourceServer.getMapName(), sourceServer.getNumOfPlayers()
+                , sourceServer.getMaxPlayers(), sourcePlayers);
+//        List<String> players = getPlayersByServerId(serverId);
+//        byte numOfPlayers = sourceServer.getNumOfPlayers();
+//        if ("GOTV".equals(players.get(0))) {
+//            players.remove(0);
+//            numOfPlayers--;
+//        }
+
     }
-
-    @Override
-    public List<ServerPlayerVO> getPlayersByServerId(Integer serverId) {
-        ServerEntity serverEntity = serverRepository.findById(serverId).orElseThrow(() -> new BizException("服务器未找到"));
-        System.out.println(serverEntity);
-        CompletableFuture<List<SourcePlayer>> players = sourceQueryClient.getPlayers(new InetSocketAddress(serverEntity.getIp(), serverEntity.getPort()));
-
-        List<SourcePlayer> sourcePlayers = players.join();
-        System.out.println(sourcePlayers);
-        return new ArrayList<>();
-    }
-
 
     @Override
     public List<ServerEntity> list() {

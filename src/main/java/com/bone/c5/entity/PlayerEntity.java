@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
@@ -14,18 +15,14 @@ import java.util.Objects;
  */
 @Entity
 @Data
-@Table(name = "role")
+@Table(name = "c5_player")
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleEntity {
+public class PlayerEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "steam")
+    private String steam;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "name_display")
-    private String nameDisplay;
+    @Column(name = "vip_time")
+    private Timestamp vipTime;
 }

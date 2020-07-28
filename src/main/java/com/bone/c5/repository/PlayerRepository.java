@@ -1,6 +1,6 @@
 package com.bone.c5.repository;
 
-import com.bone.c5.entity.RankmeEntity;
+import com.bone.c5.entity.PlayerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -10,6 +10,6 @@ import java.util.Optional;
  * @Package com.bone.c5.repository
  * @date 2020/6/25 14:46
  */
-public interface RankmeRepository extends JpaRepository<RankmeEntity, Integer> {
-    Optional<RankmeEntity> findBySteam(String steam);
+public interface PlayerRepository extends JpaRepository<PlayerEntity, Integer> {
+    Optional<PlayerEntity> findBySteam(String steam);
 }
