@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 /**
  * @author Bone
@@ -13,21 +14,21 @@ import javax.persistence.*;
  */
 @Entity
 @Data
-@Table(name = "c5_config")
+@Table(name = "c5_vip_code")
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConfigEntity {
+public class VipCodeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "message_prefix")
-    private String messagePrefix;
+    @Column(name = "code")
+    private String code;
 
-    @Column(name = "vip_prefix")
-    private String vipPrefix;
+    @Column(name = "time")
+    private Integer time;
 
-    @Column(name = "op_prefix")
-    private String opPrefix;
+    @Column(name = "steam")
+    private String steam;
 }
